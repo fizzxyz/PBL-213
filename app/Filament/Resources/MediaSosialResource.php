@@ -2,16 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\MediaSosialResource\Pages;
-use App\Filament\Resources\MediaSosialResource\RelationManagers;
-use App\Models\MediaSosial;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\MediaSosial;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\MediaSosialResource\Pages;
+use App\Filament\Resources\MediaSosialResource\RelationManagers;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 
 class MediaSosialResource extends Resource
 {
@@ -19,11 +23,28 @@ class MediaSosialResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
 
+    protected static ?string $navigationGroup = 'Content Management System';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->required()
+                    ->label('Nama Media Sosial')
+                    ->maxLength(255),
+                TextInput::make('url')
+                    ->required()
+                    ->label('URL')
+                    ->url(),
+                TextInput::make('username')
+                    ->label('Username')
+                    ->maxLength(255),
+                FileUpload::make('image')
+                    ->label('Logo')
+                    ->image()
+                    ->directory('media-sosial')
+                    ->required(),
             ]);
     }
 
@@ -31,7 +52,21 @@ class MediaSosialResource extends Resource
     {
         return $table
             ->columns([
-                //
+                ImageColumn::make('image')
+                    ->label('Logo')
+                    ->size('20'),
+                TextColumn::make('name')
+                    ->label('Media Sosial')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('url')
+                    ->label('URL')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('username')
+                    ->label('Username')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //

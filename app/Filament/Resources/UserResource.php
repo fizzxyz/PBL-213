@@ -6,9 +6,12 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -23,7 +26,35 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->label('Nama')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('email')
+                    ->label('Email')
+                    ->required()
+                    ->email()
+                    ->maxLength(255),
+                TextInput::make('nomor_hp')
+                    ->label('Nomor HP')
+                    ->maxLength(15),
+                TextInput::make('password')
+                    ->label('Password')
+                    ->password()
+                    ->required()
+                    ->minLength(8)
+                    ->maxLength(255)
+                    ->visibleOn('create'),
+                Select::make('unit_pendidikan_id')
+                    ->label('Unit Pendidikan')
+                    ->relationship('unitPendidikan', 'nama')
+                    ->searchable()
+                    ->preload()
+                    ->reactive(),
+                Select::make('roles')
+                    ->label('Roles')
+                    ->relationship('roles', 'name')
+                    ->required(),
             ]);
     }
 
@@ -31,10 +62,33 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('name')
+                    ->label('Nama')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('email')
+                    ->label('Email')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('nomor_hp')
+                    ->label('Nomor HP')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('unitPendidikan.nama')
+                    ->label('Unit Pendidikan')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('roles.name')
+                    ->label('Roles')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

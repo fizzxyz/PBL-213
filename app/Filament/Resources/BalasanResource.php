@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BalasanResource\Pages;
-use App\Filament\Resources\BalasanResource\RelationManagers;
-use App\Models\Balasan;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Balasan;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\BalasanResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\BalasanResource\RelationManagers;
 
 class BalasanResource extends Resource
 {
@@ -19,11 +20,24 @@ class BalasanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
+    protected static ?string $navigationGroup = 'Content Management System';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->required()
+                    ->label('Nama Pengguna'),
+                Forms\Components\Select::make('komentar_id')
+                    ->relationship('komentar', 'isi')
+                    ->required()
+                    ->label('Komentar'),
+                Forms\Components\TextInput::make('isi')
+                    ->required()
+                    ->label('Balasan')
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,7 +45,34 @@ class BalasanResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('id')
+                    ->label('Id')
+                    ->sortable()
+                    ->searchable()
+                    ->limit(50),
+                TextColumn::make('user.name')
+                    ->label('Nama Pengguna')
+                    ->sortable()
+                    ->searchable()
+                    ->limit(50),
+                TextColumn::make('komentar.isi')
+                    ->label('Komentar')
+                    ->sortable()
+                    ->searchable()
+                    ->limit(50),
+                TextColumn::make('isi')
+                    ->label('Balasan')
+                    ->sortable()
+                    ->searchable()
+                    ->limit(50),
+                TextColumn::make('created_at')
+                    ->label('Tanggal Dibuat')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('updated_at')
+                    ->label('Tanggal Diperbarui')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

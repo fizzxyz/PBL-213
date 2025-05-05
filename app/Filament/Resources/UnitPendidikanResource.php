@@ -2,16 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UnitPendidikanResource\Pages;
-use App\Filament\Resources\UnitPendidikanResource\RelationManagers;
-use App\Models\UnitPendidikan;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\UnitPendidikan;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\UnitPendidikanResource\Pages;
+use App\Filament\Resources\UnitPendidikanResource\RelationManagers;
 
 class UnitPendidikanResource extends Resource
 {
@@ -23,7 +26,20 @@ class UnitPendidikanResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('nama')
+                    ->required()
+                    ->label('Nama Unit Pendidikan')
+                    ->maxLength(255)
+                    ->placeholder('Masukkan nama unit pendidikan'),
+                TextInput::make('alamat')
+                    ->required()
+                    ->label('Alamat Unit Pendidikan')
+                    ->maxLength(255)
+                    ->placeholder('Masukkan alamat unit pendidikan'),
+                RichEditor::make('about')
+                    ->required()
+                    ->label('Tentang Unit Pendidikan')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -31,7 +47,17 @@ class UnitPendidikanResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('nama')
+                    ->label('Nama Unit Pendidikan')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(50),
+                TextColumn::make('alamat')
+                    ->label('Alamat Unit Pendidikan')
+                    ->limit(50),
+                TextColumn::make('about')
+                    ->label('Tentang Unit Pendidikan')
+                    ->limit(50),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

@@ -2,16 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KomentarResource\Pages;
-use App\Filament\Resources\KomentarResource\RelationManagers;
-use App\Models\Komentar;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Komentar;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\KomentarResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\KomentarResource\RelationManagers;
 
 class KomentarResource extends Resource
 {
@@ -19,11 +22,24 @@ class KomentarResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center';
 
+    protected static ?string $navigationGroup = 'Content Management System';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->required()
+                    ->label('Nama Pengguna'),
+                Select::make('artikel_id')
+                    ->relationship('artikel', 'judul')
+                    ->required()
+                    ->label('Judul Artikel'),
+                TextInput::make('isi')
+                    ->required()
+                    ->label('Komentar')
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,7 +47,33 @@ class KomentarResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('id')
+                    ->label('Id')
+                    ->sortable()
+                    ->searchable()
+                    ->limit(50),
+                TextColumn::make('user.name')
+                    ->label('Nama Pengguna')
+                    ->sortable()
+                    ->searchable()
+                    ->limit(50),
+                TextColumn::make('isi')
+                    ->label('Komentar')
+                    ->sortable()
+                    ->searchable()
+                    ->limit(50),
+                TextColumn::make('created_at')
+                    ->label('Tanggal Dibuat')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('updated_at')
+                    ->label('Tanggal Diperbarui')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('deleted_at')
+                    ->label('Tanggal Dihapus')
+                    ->dateTime()
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

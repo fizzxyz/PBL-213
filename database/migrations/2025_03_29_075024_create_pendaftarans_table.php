@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('nama_lengkap');
             $table->integer('usia');
             $table->string('alamat');
-            $table->foreignId('unit_pendidikan_id')->constrained();
+            $table->string('path_foto');
+            $table->string('path_ijazah')->nullable();
+            $table->string('path_skhu');
             $table->enum('status_pendaftaran', ['pending', 'diterima', 'ditolak'])->default('pending');
             $table->softDeletes();
             $table->timestamps();

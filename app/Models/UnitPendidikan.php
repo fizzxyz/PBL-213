@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Sluggable\HasSlug;
 
 class UnitPendidikan extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasSlug;
 
-    protected $fillable = ['nama', 'alamat', 'about'];
+    protected $fillable = ['nama', 'alamat', 'about', 'slug'];
 
     // Relasi ke User
     public function users()
@@ -24,9 +26,29 @@ class UnitPendidikan extends Model
         return $this->hasMany(Pendaftaran::class);
     }
 
-    // Relasi ke Tag
-    public function tags()
+    // Relasi ke Artikel
+    public function artikels()
     {
-        return $this->hasMany(Tag::class);
+        return $this->belongsToMany(Artikel::class, 'tags');
     }
+
+    // Relasi ke Penerimaan
+    public function penerimaans()
+    {
+        return $this->hasMany(Penerimaan::class);
+    }
+
+    // Relasi ke Navbar
+    public function navbars()
+    {
+        return $this->hasMany(Navbar::class);
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('nama')
+            ->saveSlugsTo('slug');
+    }
+
 }

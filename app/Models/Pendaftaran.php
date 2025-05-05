@@ -13,7 +13,8 @@ class Pendaftaran extends Model
 
     protected $fillable = [
         'user_id', 'penerimaan_id', 'nomor_pendaftaran',
-        'nama_lengkap', 'usia', 'alamat', 'unit_pendidikan_id', 'status_pendaftaran'
+        'nama_lengkap', 'usia', 'alamat', 'status_pendaftaran', 'unit_pendidikan_id',
+        'path_foto', 'path_ijazah', 'path_skhu'
     ];
 
     // Relasi ke User

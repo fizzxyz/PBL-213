@@ -35,10 +35,11 @@ class Artikel extends Model
     }
 
     // Relasi ke Tag
-    public function tags()
+    public function unitPendidikans()
     {
-        return $this->hasMany(Tag::class);
+        return $this->belongsToMany(UnitPendidikan::class, 'tags');
     }
+
 
     public function getSlugOptions(): SlugOptions
     {

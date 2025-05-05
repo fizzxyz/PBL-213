@@ -18,12 +18,6 @@ class Category extends Model
         'slug',
     ];
 
-    public function setNameAttributes($value)
-    {
-        $this->attributes['name'] = $value;
-        $this->attributes['slug'] = Str::slug($value);
-    }
-
     public function artikel(): HasMany
     {
         return $this->hasMany(Artikel::class);

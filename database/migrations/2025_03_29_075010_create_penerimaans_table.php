@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->date('dibuka_pada');
             $table->date('ditutup_pada');
+            $table->foreignId('unit_pendidikan_id')->constrained()->cascadeOnDelete();
             $table->text('deskripsi')->nullable();
             $table->unsignedBigInteger('biaya');
             $table->softDeletes();

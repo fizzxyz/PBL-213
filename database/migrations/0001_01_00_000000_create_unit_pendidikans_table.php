@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('unit_pendidikans', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->string('slug')->unique();
             $table->string('alamat');
             $table->text('about');
             $table->softDeletes();
