@@ -1,4 +1,4 @@
-<header id="navbar" class="fixed top-0 left-0 w-full z-10 bg-transparent transition-colors duration-300">
+<header id="navbar" class="fixed top-0 left-0 w-full z-10 bg-transparent bg-softyellow transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
 
         <!-- Logo + Company Name -->
@@ -63,7 +63,7 @@
                 </div>
             </div>
             <a href="#" class="text-white hover:text-yellow-300 text-change">Galeri</a>
-            <a href="#" class="text-white hover:text-yellow-300 text-change">PPDB</a>
+            <a href="{{ route('penerimaan') }}" class="text-white hover:text-yellow-300 text-change">PPDB</a>
         </nav>
     </div>
 
@@ -107,7 +107,7 @@
         </div>
 
         <a href="#" class="block text-white hover:text-yellow-300 text-change">Galeri</a>
-        <a href="#" class="block text-white hover:text-yellow-300 text-change">PPDB</a>
+        <a href="{{ route('penerimaan') }}" class="text-white hover:text-yellow-300 text-change">PPDB</a>
     </nav>
 
 </header>

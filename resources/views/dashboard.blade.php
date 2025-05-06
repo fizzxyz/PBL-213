@@ -307,4 +307,3 @@
         document.addEventListener('DOMContentLoaded', renderCalendar);
     </script>
 </section>
-
