@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('nomor_pendaftaran');
             $table->string('nama_lengkap');
             $table->integer('usia');
+            $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
             $table->string('alamat');
             $table->string('path_foto');
-            $table->string('path_ijazah')->nullable();
+            $table->string('path_ijazah');
             $table->string('path_skhu');
             $table->enum('status_pendaftaran', ['pending', 'diterima', 'ditolak'])->default('pending');
             $table->softDeletes();

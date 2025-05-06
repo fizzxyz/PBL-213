@@ -7,6 +7,7 @@ use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PenerimaanController;
+use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\UnitPendidikanController;
 
 Route::middleware('web')->group(function () {
@@ -31,8 +32,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/penerimaan', function () {
         return view('penerimaan');
     })->name('penerimaan');
+    // Route::get('/penerimaan/daftar', function () {
+    //     return view('penerimaan.form');
+    // })->name('pendaftaran');
     Route::get('/penerimaan/list', [PenerimaanController::class, 'index'])->name('penerimaan.list');
     Route::get('/penerimaan/{id}/wizard', [PenerimaanController::class, 'wizard'])->name('penerimaan.wizard');
+    Route::post('/pendaftaran/store', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
     Route::get('/profile', [ProfileController::class, 'show'])->name('show.profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

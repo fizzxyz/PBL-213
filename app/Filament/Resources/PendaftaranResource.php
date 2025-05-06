@@ -40,7 +40,7 @@ class PendaftaranResource extends Resource
                     ->relationship('penerimaan', 'nama')
                     ->required()
                     ->label('Penerimaan'),
-                    TextInput::make('nomor_pendaftaran')
+                TextInput::make('nomor_pendaftaran')
                     ->label('Nomor Pendaftaran')
                     ->default(function () {
                         return 'PD-' . now()->format('Ymd') . '-' . Str::random(6);
