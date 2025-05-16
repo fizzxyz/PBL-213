@@ -6,6 +6,7 @@ use App\Http\Controllers\VideoController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\UnitPendidikanController;
@@ -42,5 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/checkout/success', [TransaksiController::class, 'checkout_success'])->name('front.checkout.success');
 
 require __DIR__.'/auth.php';

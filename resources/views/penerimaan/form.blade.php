@@ -129,8 +129,19 @@
 
     <!-- Step 3 -->
     <div x-show="step === 3" x-transition class="col-span-full">
-      <h2 class="text-xl font-semibold mb-4">Informasi Pembayaran</h2>
-      <p class="text-gray-600">Silakan lakukan pembayaran sesuai petunjuk berikut...</p>
+        <div>
+            <label class="block font-semibold mb-1">Pendaftaran yang dipilih</label>
+            <input type="text" name="pendaftaran" class="w-full border rounded px-3 py-2 mb-4" value="{{ $penerimaan->nama ?? '' }}" readonly>
+
+            <label class="block font-semibold mb-1">Unit Pendidikan yang dipilih</label>
+            <input type="text" name="unit_pendidikan" class="w-full border rounded px-3 py-2 mb-4" value="{{ $penerimaan->unitPendidikan->nama ?? '' }}" readonly>
+
+            <label class="block font-semibold mb-1">Harga Formulir</label>
+            <input type="text" name="harga" class="w-full border rounded px-3 py-2" value="{{ $penerimaan->biaya ?? '' }}" readonly>
+
+            <label class="block font-semibold mb-1">Total Biaya</label>
+            <input type="text" name="total" class="w-full border rounded px-3 py-2" :value="biayaTotal.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })" readonly>
+        </div>
 
       <div class="col-span-full flex justify-between mt-4">
         <button
@@ -143,7 +154,7 @@
           class="bg-green-500 text-white font-semibold px-6 py-2 rounded shadow hover:bg-green-600"
           @click="alert('Form selesai!')"
         >
-          Selesai Pembayaran
+          Bayar Sekarang
         </button>
       </div>
     </div>
@@ -177,6 +188,10 @@
       return {
         step: 1,
         showModal: false,
+        biayaDasar: {{ $penerimaan->biaya ?? 0 }},
+        get biayaTotal() {
+        return this.biayaDasar + 5000;
+        },
         async submitData() {
           const formData = new FormData();
 
