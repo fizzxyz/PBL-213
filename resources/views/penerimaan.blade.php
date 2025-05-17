@@ -12,7 +12,7 @@
             <p class="mt-2 text-gray-600 group-hover:text-white text-sm transition">Klik untuk melanjutkan ke form pendaftaran</p>
         </a>
         <!-- Card Riwayat -->
-        <a href="#" class="group bg-white rounded-2xl shadow-md flex flex-col items-center justify-center py-16 px-8 transition transform hover:scale-105 hover:shadow-xl hover:bg-black duration-300">
+        <a href="{{ route('penerimaan.riwayat') }}" class="group bg-white rounded-2xl shadow-md flex flex-col items-center justify-center py-16 px-8 transition transform hover:scale-105 hover:shadow-xl hover:bg-black duration-300">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4 text-gray-900 group-hover:text-white transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12a9 9 0 1118 0 9 9 0 01-18 0zm9-4v4l3 3" />
             </svg>

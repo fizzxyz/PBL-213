@@ -39,12 +39,16 @@ class TransaksiResource extends Resource
                     ->label('Kode Transaksi')
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('pendaftaran.nomor_pendaftaran')
+                    ->label('Nomor Pendaftaran')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('user.name')
                     ->label('Nama User')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('pendaftaran.nama')
-                    ->label('Nama Pendaftaran')
+                TextColumn::make('pendaftaran.penerimaan.nama')
+                    ->label('Penerimaan')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('total')

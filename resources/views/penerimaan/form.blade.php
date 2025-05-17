@@ -137,10 +137,15 @@
             <input type="text" name="unit_pendidikan" class="w-full border rounded px-3 py-2 mb-4" value="{{ $penerimaan->unitPendidikan->nama ?? '' }}" readonly>
 
             <label class="block font-semibold mb-1">Harga Formulir</label>
-            <input type="text" name="harga" class="w-full border rounded px-3 py-2" value="{{ $penerimaan->biaya ?? '' }}" readonly>
+            <input type="text" name="harga" class="w-full border rounded px-3 py-2 mb-4" value="{{ $penerimaan->biaya ?? '' }}" readonly>
 
             <label class="block font-semibold mb-1">Total Biaya</label>
-            <input type="text" name="total" class="w-full border rounded px-3 py-2" :value="biayaTotal.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })" readonly>
+            <input type="text" name="total" class="w-full border rounded px-3 py-2 mb-4" :value="biayaTotal.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })" readonly>
+
+            <div class="p-4 bg-yellow-50 rounded border border-yellow-200 mb-4">
+                <h3 class="font-semibold text-yellow-700 mb-2">Informasi Pembayaran</h3>
+                <p class="text-sm text-yellow-800">Klik tombol "Bayar Sekarang" untuk melanjutkan proses pembayaran melalui berbagai metode pembayaran yang tersedia.</p>
+            </div>
         </div>
 
       <div class="col-span-full flex justify-between mt-4">
@@ -151,10 +156,18 @@
           Sebelumnya
         </button>
         <button
+          id="pay-button"
           class="bg-green-500 text-white font-semibold px-6 py-2 rounded shadow hover:bg-green-600"
-          @click="alert('Form selesai!')"
+          @click="processPayment()"
+          :disabled="isLoadingPayment"
         >
-          Bayar Sekarang
+          <span x-show="isLoadingPayment" class="inline-block mr-2">
+            <svg class="animate-spin h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </span>
+          <span x-text="isLoadingPayment ? 'Memproses...' : 'Bayar Sekarang'"></span>
         </button>
       </div>
     </div>
@@ -182,72 +195,249 @@
   </div>
 </div>
 
+<!-- Midtrans Snap.js Script -->
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.clientKey') }}"></script>
+
 <!-- AlpineJS Script -->
 <script>
     function wizardForm() {
-      return {
-        step: 1,
-        showModal: false,
-        biayaDasar: {{ $penerimaan->biaya ?? 0 }},
-        get biayaTotal() {
-        return this.biayaDasar + 5000;
-        },
-        async submitData() {
-          const formData = new FormData();
+  return {
+    step: 1,
+    showModal: false,
+    biayaDasar: {{ $penerimaan->biaya ?? 0 }},
+    pendaftaranId: null,
+    snapToken: null,
+    isLoadingPayment: false,
+    get biayaTotal() {
+      return this.biayaDasar + 5000;
+    },
+    async submitData() {
+      // Check if we're already processing to prevent multiple submissions
+      if (this.isLoadingPayment) return;
+      this.isLoadingPayment = true;
 
-          // Ambil nilai input
-          formData.append('nama_lengkap', document.querySelector('input[name="nama_lengkap"]').value);
-          formData.append('usia', document.querySelector('input[name="usia"]').value);
-          formData.append('jenis_kelamin', document.querySelector('select[name="jenis_kelamin"]').value);
-          formData.append('unit_pendidikan', document.querySelector('input[name="unit_pendidikan"]').value);
-          formData.append('nomor_pendaftaran', document.querySelector('input[name="nomor_pendaftaran"]').value);
-          formData.append('alamat', document.querySelector('textarea[name="alamat"]').value);
-          formData.append('penerimaan_id', '{{ $penerimaan->id }}'); // ✅ Tambah penerimaan_id
+      const formData = new FormData();
 
-          // Ambil file
-          const ijazah = document.querySelector('input[name="ijazah"]').files[0];
-          const pasFoto = document.querySelector('input[name="pas_foto"]').files[0];
-          const skhu = document.querySelector('input[name="skhu"]').files[0];
+      // Ambil nilai input
+      formData.append('nama_lengkap', document.querySelector('input[name="nama_lengkap"]').value);
+      formData.append('usia', document.querySelector('input[name="usia"]').value);
+      formData.append('jenis_kelamin', document.querySelector('select[name="jenis_kelamin"]').value);
+      formData.append('unit_pendidikan', document.querySelector('input[name="unit_pendidikan"]').value);
+      formData.append('nomor_pendaftaran', document.querySelector('input[name="nomor_pendaftaran"]').value);
+      formData.append('alamat', document.querySelector('textarea[name="alamat"]').value);
+      formData.append('penerimaan_id', '{{ $penerimaan->id ?? 1 }}');
 
-          // Validasi apakah file sudah dipilih
-          if (!ijazah || !pasFoto || !skhu) {
-            alert('Semua file wajib diunggah.');
-            return;
-          }
+      // Add total_biaya field to avoid dependency on penerimaan table
+      formData.append('total_biaya', this.biayaTotal);
 
-          formData.append('ijazah', ijazah);
-          formData.append('pas_foto', pasFoto);
-          formData.append('skhu', skhu);
+      // Ambil file
+      const ijazah = document.querySelector('input[name="ijazah"]').files[0];
+      const pasFoto = document.querySelector('input[name="pas_foto"]').files[0];
+      const skhu = document.querySelector('input[name="skhu"]').files[0];
 
-          try {
-            const response = await fetch("{{ route('pendaftaran.store') }}", {
-              method: "POST",
-              headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-              },
-              body: formData
-            });
+      // Validasi apakah file sudah dipilih
+      if (!ijazah || !pasFoto || !skhu) {
+        alert('Semua file wajib diunggah.');
+        this.isLoadingPayment = false;
+        return;
+      }
 
-            if (!response.ok) {
-              const errorData = await response.json();
-              let message = errorData.message || 'Gagal menyimpan data.';
-              if (errorData.errors) {
-                message += '\n' + Object.values(errorData.errors)
-                  .map(err => '- ' + err.join(', '))
-                  .join('\n');
-              }
-              throw new Error(message);
-            }
+      formData.append('ijazah', ijazah);
+      formData.append('pas_foto', pasFoto);
+      formData.append('skhu', skhu);
 
-            await response.json();
-            this.showModal = false;
-            this.step = 3;
-          } catch (error) {
-            alert("Terjadi kesalahan saat menyimpan data:\n" + error.message);
-          }
+      try {
+        console.log("Submitting form to pendaftaran/store");
+
+        // Explicitly use the correct URL instead of route helper
+        // You can change this URL to match your actual pendaftaran store endpoint
+        const storeUrl = '/pendaftaran/store';
+
+        const response = await fetch(storeUrl, {
+          method: "POST",
+          headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json' // Added this header to ensure JSON response
+          },
+          body: formData
+        });
+
+        console.log("Response status:", response.status);
+
+        // Check content type
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          // If not JSON, get the text response for debugging
+          const textResponse = await response.text();
+          console.error("Server returned non-JSON response:", textResponse.substring(0, 500));
+          throw new Error("Server returned an invalid response format. Please check server logs.");
         }
-      };
+
+        // Parse the JSON response
+        const result = await response.json();
+        console.log("Response data:", result);
+
+        if (!response.ok) {
+          let errorMessage = result.message || 'Gagal menyimpan data.';
+          if (result.errors) {
+            errorMessage += '\n' + Object.entries(result.errors)
+              .map(([field, errors]) => `${field}: ${errors.join(', ')}`)
+              .join('\n');
+          }
+          throw new Error(errorMessage);
+        }
+
+        // Ekstrak ID pendaftaran dan ID transaksi dari response
+        if (result && result.pendaftaran_id) {
+          this.pendaftaranId = result.pendaftaran_id;
+        } else if (result && result.pendaftaran && result.pendaftaran.id) {
+          this.pendaftaranId = result.pendaftaran.id;
+        } else if (result && result.id) {
+          this.pendaftaranId = result.id;
+        } else {
+          console.log("Response data:", result);
+          throw new Error("Tidak dapat menemukan ID pendaftaran dalam response");
+        }
+
+        console.log("Pendaftaran ID tersimpan:", this.pendaftaranId);
+
+        // Simpan transaksi ID jika ada
+        if (result && result.transaksi_id) {
+          this.transaksiId = result.transaksi_id;
+          console.log("Transaksi ID tersimpan:", this.transaksiId);
+        }
+
+        this.showModal = false;
+        this.step = 3;
+      } catch (error) {
+        console.error("Error during submission:", error);
+        alert("Terjadi kesalahan saat menyimpan data:\n" + error.message);
+      } finally {
+        this.isLoadingPayment = false;
+      }
+    },
+    async processPayment() {
+      if (!this.pendaftaranId) {
+        alert('ID pendaftaran tidak ditemukan. Silakan kembali ke formulir dan coba lagi.');
+        return;
+      }
+
+      this.isLoadingPayment = true;
+
+      try {
+        console.log("Mengirim request pembayaran dengan ID:", this.pendaftaranId);
+
+        // Dapatkan informasi tambahan untuk pembayaran
+        const nama = document.querySelector('input[name="nama_lengkap"]').value || 'Pendaftar';
+        const totalBiaya = this.biayaTotal;
+        const unitPendidikan = document.querySelector('input[name="unit_pendidikan"]').value || '';
+        const pendaftaran = document.querySelector('input[name="pendaftaran"]').value || '';
+
+        // Data untuk request pembayaran
+        const paymentData = {
+          pendaftaran_id: this.pendaftaranId,
+          nama_lengkap: nama,
+          total_biaya: totalBiaya,
+          unit_pendidikan: unitPendidikan,
+          nama_pendaftaran: pendaftaran
+        };
+
+        console.log("Data pembayaran:", paymentData);
+
+        // Request untuk mendapatkan snap token
+        // You can change this URL to match your actual transaksi create-payment endpoint
+        const paymentUrl = '/transaksi/create-payment';
+
+        const response = await fetch(paymentUrl, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(paymentData)
+        });
+
+        console.log("Status response:", response.status);
+
+        // Check content type
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          // If not JSON, get the text response for debugging
+          const textResponse = await response.text();
+          console.error("Payment server returned non-JSON response:", textResponse.substring(0, 500));
+          throw new Error("Payment server returned an invalid response format. Please check server logs.");
+        }
+
+        // Parse JSON response
+        const data = await response.json();
+        console.log("Payment response data:", data);
+
+        if (!response.ok) {
+          throw new Error(`Gagal memproses pembayaran: ${response.status} - ${data.message || 'Unknown error'}`);
+        }
+
+        // Cek dan ambil snap token
+        if (!data) {
+          throw new Error("Response data kosong");
+        }
+
+        // Coba temukan token dari berbagai kemungkinan lokasi
+        const possibleTokenLocations = [
+          data?.snap_token,
+          data?.token,
+          data?.data?.snap_token,
+          data?.data?.token,
+          data?.transaction?.snap_token,
+          data?.result?.snap_token,
+          data?.result?.token
+        ];
+
+        this.snapToken = possibleTokenLocations.find(token => token && typeof token === 'string');
+
+        if (!this.snapToken) {
+          throw new Error(`Token pembayaran tidak ditemukan dalam response: ${JSON.stringify(data)}`);
+        }
+
+        console.log("Snap token ditemukan:", this.snapToken);
+
+        // Tampilkan Snap Payment Page
+        window.snap.pay(this.snapToken, {
+        onSuccess: function(result) {
+            console.log("Pembayaran sukses:", result);
+            // Create a URL with all the necessary information from result
+            let successUrl = "/checkout/success?order_id=" + result.order_id +
+                            "&payment_type=" + result.payment_type;
+
+            // Add additional result data as JSON string in a parameter
+            // This will include transaction_id, pdf_url and other details from Midtrans
+            successUrl += "&transaction_data=" + encodeURIComponent(JSON.stringify(result));
+
+            window.location.href = successUrl;
+        },
+          onPending: function(result) {
+            console.log("Pembayaran tertunda:", result);
+            alert("Pembayaran tertunda! Silakan selesaikan pembayaran Anda.");
+          },
+          onError: function(result) {
+            console.error("Pembayaran error:", result);
+            alert("Pembayaran gagal! Detail: " + JSON.stringify(result));
+          },
+          onClose: function() {
+            console.log("Popup pembayaran ditutup");
+            alert('Anda menutup popup tanpa menyelesaikan pembayaran');
+          }
+        });
+
+      } catch (error) {
+        console.error("Error dalam proses pembayaran:", error);
+        alert("Error: " + error.message);
+      } finally {
+        this.isLoadingPayment = false;
+      }
     }
-  </script>
+  };
+}
+</script>
 
 @endsection

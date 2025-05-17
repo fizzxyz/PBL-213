@@ -25,25 +25,20 @@ Route::get('/galeri/{slug}', [GaleriController::class, 'show'])->name('galeri.sh
 Route::get('/video/{slug}', [VideoController::class, 'show'])->name('video.show');
 Route::get('/unit/{slug}', [UnitPendidikanController::class, 'show'])->name('unit.show');
 
-// Route::get('/penerimaan', function () {
-//     return view('penerimaan');
-// })->middleware(['auth', 'verified'])->name('penerimaan');
-
 Route::middleware('auth')->group(function () {
     Route::get('/penerimaan', function () {
         return view('penerimaan');
     })->name('penerimaan');
-    // Route::get('/penerimaan/daftar', function () {
-    //     return view('penerimaan.form');
-    // })->name('pendaftaran');
     Route::get('/penerimaan/list', [PenerimaanController::class, 'index'])->name('penerimaan.list');
     Route::get('/penerimaan/{id}/wizard', [PenerimaanController::class, 'wizard'])->name('penerimaan.wizard');
     Route::post('/pendaftaran/store', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
+    Route::post('/transaksi/create-payment', [TransaksiController::class, 'createPayment'])->name('transaksi.create-payment');
     Route::get('/profile', [ProfileController::class, 'show'])->name('show.profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/penerimaan/riwayat', [PendaftaranController::class, 'riwayat'])->name('penerimaan.riwayat');
 });
 
-Route::get('/checkout/success', [TransaksiController::class, 'checkout_success'])->name('front.checkout.success');
+Route::get('/checkout/success', [TransaksiController::class, 'checkout_success'])->name('checkout.success');
 
 require __DIR__.'/auth.php';

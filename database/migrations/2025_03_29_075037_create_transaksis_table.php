@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('total');
             $table->boolean('is_paid');
             $table->string('metode_pembayaran')->nullable();
-            $table->string('bukti_pembayaran')->nullable();
+            $table->text('bukti_pembayaran')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
