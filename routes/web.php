@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\MidtransDebugController;
 use App\Http\Controllers\UnitPendidikanController;
 
 Route::middleware('web')->group(function () {
@@ -32,12 +33,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/penerimaan/list', [PenerimaanController::class, 'index'])->name('penerimaan.list');
     Route::get('/penerimaan/{id}/wizard', [PenerimaanController::class, 'wizard'])->name('penerimaan.wizard');
     Route::post('/pendaftaran/store', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
-    Route::post('/transaksi/create-payment', [TransaksiController::class, 'createPayment'])->name('transaksi.create-payment');
+    Route::get('/payment/snap-token/{id}', [TransaksiController::class, 'getSnapToken'])->name('payment.snap-token');
+    // Route::post('/transaksi/create-payment', [TransaksiController::class, 'createPayment'])->name('transaksi.create-payment');
     Route::get('/profile', [ProfileController::class, 'show'])->name('show.profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/penerimaan/riwayat', [PendaftaranController::class, 'riwayat'])->name('penerimaan.riwayat');
 });
+
+Route::post('/payment/notification', [TransaksiController::class, 'handleNotification'])->name('payment.notification');
+
+// Route untuk halaman setelah pembayaran selesai (optional)
+Route::get('/payment/finish', function() {
+    return view('penerimaan.finish');
+})->name('payment.finish');
 
 Route::get('/checkout/success', [TransaksiController::class, 'checkout_success'])->name('checkout.success');
 

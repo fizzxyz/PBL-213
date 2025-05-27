@@ -11,7 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->trustProxies(at: '*');
+        $middleware->validateCsrfTokens(except: [
+            '/payment/notification', // Exclude Midtrans notification route
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

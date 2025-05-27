@@ -2,140 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaksi;
-use App\Models\Pendaftaran;
-use App\Services\MidtransService;
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class TransaksiController extends Controller
 {
-    protected $midtransService;
+    public function __construct(protected PaymentService $paymentService) {}
 
-    public function __construct(MidtransService $midtransService)
-    {
-        $this->midtransService = $midtransService;
-    }
-
-    public function createPayment(Request $request)
+    public function getSnapToken($id)
     {
         try {
-            // Get pendaftaran data
-            $pendaftaran = Pendaftaran::findOrFail($request->pendaftaran_id);
-
-            // Generate unique transaction code
-            $kodeTransaksi = 'TRX-' . strtoupper(Str::random(8));
-
-            // Calculate total amount
-            $totalAmount = $pendaftaran->penerimaan->biaya + 5000; // Base fee + additional fee
-
-            // Create transaction record
-            $transaksi = Transaksi::create([
-                'kode_transaksi' => $kodeTransaksi,
-                'user_id' => Auth::id(),
-                'pendaftaran_id' => $pendaftaran->id,
-                'total' => $totalAmount,
-                'is_paid' => false
-            ]);
-
-            // Set transaction parameters for Midtrans
-            $params = [
-                'transaction_details' => [
-                    'order_id' => $kodeTransaksi,
-                    'gross_amount' => $totalAmount,
-                ],
-                'customer_details' => [
-                    'first_name' => Auth::user()->name,
-                    'email' => Auth::user()->email,
-                ],
-                'item_details' => [
-                    [
-                        'id' => $pendaftaran->penerimaan->id,
-                        'price' => $pendaftaran->penerimaan->biaya,
-                        'quantity' => 1,
-                        'name' => 'Pendaftaran ' . $pendaftaran->penerimaan->nama,
-                    ],
-                    [
-                        'id' => 'fee',
-                        'price' => 5000,
-                        'quantity' => 1,
-                        'name' => 'Biaya Layanan',
-                    ]
-                ],
-            ];
-
-            // Generate Snap token
-            $snapToken = $this->midtransService->createSnapToken($params);
-
-            return response()->json([
-                'success' => true,
-                'snap_token' => $snapToken,
-                'transaction' => $transaksi
-            ]);
-
+            $snapToken = $this->paymentService->createPayment($id);
+            return response()->json(['snap_token' => $snapToken]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error creating payment: ' . $e->getMessage()
-            ], 500);
+            Log::error('Failed to get snap token: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to create payment'], 500);
         }
     }
 
-    public function checkout_success(Request $request)
+    /**
+     * Handle webhook notification dari Midtrans
+     */
+    public function handleNotification(Request $request)
     {
-        // Handle successful payment callback from Midtrans
-        $kodeTransaksi = $request->order_id;
+        try {
+            // Log semua data yang diterima
+            Log::info('Midtrans webhook received', [
+                'headers' => $request->headers->all(),
+                'body' => $request->all()
+            ]);
 
-        // Find the transaction
-        $transaksi = Transaksi::where('kode_transaksi', $kodeTransaksi)->first();
+            $status = $this->paymentService->handlePaymentNotification();
 
-        if ($transaksi) {
-            // Get transaction data from the request
-            $transactionData = null;
+            Log::info('Webhook processed successfully', ['status' => $status]);
 
-            if ($request->has('transaction_data')) {
-                try {
-                    // Decode the JSON string from the URL parameter
-                    $transactionData = json_decode($request->transaction_data, true);
-                } catch (\Exception $e) {
-                    // Log error but continue processing
-                    \Log::error('Failed to decode transaction data: ' . $e->getMessage());
-                }
-            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Notification processed successfully'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Webhook notification error: ' . $e->getMessage(), [
+                'request_data' => $request->all()
+            ]);
 
-            // Prepare data to update
-            $updateData = [
-                'is_paid' => true,
-                'metode_pembayaran' => $request->payment_type ?? 'midtrans'
-            ];
-
-            // If we have valid transaction data, add it to bukti_pembayaran
-            if ($transactionData) {
-                // Store important transaction details in bukti_pembayaran
-                $buktiPembayaran = [
-                    'transaction_id' => $transactionData['transaction_id'] ?? null,
-                    'order_id' => $transactionData['order_id'] ?? null,
-                    'payment_type' => $transactionData['payment_type'] ?? null,
-                    'status_code' => $transactionData['status_code'] ?? null,
-                    'pdf_url' => $transactionData['pdf_url'] ?? null,
-                    'transaction_time' => $transactionData['transaction_time'] ?? null,
-                    'gross_amount' => $transactionData['gross_amount'] ?? null,
-                    'payment_details' => $transactionData // Store all details for future reference
-                ];
-
-                $updateData['bukti_pembayaran'] = json_encode($buktiPembayaran);
-
-                // Also update transaction status if we received one
-                if (isset($transactionData['transaction_status'])) {
-                    $updateData['status'] = $transactionData['transaction_status'];
-                }
-            }
-
-            // Update the transaction record
-            $transaksi->update($updateData);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to process notification'
+            ], 500);
         }
-
-        return view('transaksi.success', compact('transaksi'));
     }
 }
