@@ -1,21 +1,60 @@
-<header id="navbar" class="fixed top-0 left-0 w-full z-10 bg-softyellow">
+<!-- Navbar with Responsive Dropdown -->
+<header id="navbar" class="fixed top-0 left-0 w-full z-10 bg-softyellow shadow">
     <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-
         <!-- Logo + Yayasan Name -->
         <div class="flex items-center space-x-2">
             <img src="{{ asset('storage/' . $yayasan->logo) }}" alt="Logo" class="h-10" />
             <span class="text-xl font-bold text-black">{{ $yayasan->name }}</span>
         </div>
 
-        <!-- Profile (Desktop) -->
-        <nav class="hidden md:flex space-x-6">
-            <a href="{{ route('show.profile') }}" class="flex items-center hover:text-blue-600 transition-colors duration-200">
+        <!-- Hamburger Icon (Mobile) -->
+        <div class="md:hidden" x-data="{ open: false }">
+            <button @click="open = !open" class="text-gray-800 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+
+            <!-- Mobile Dropdown -->
+            <div x-show="open" x-cloak class="absolute top-full right-0 mt-2 w-56 bg-white rounded-md shadow-md py-2 z-50">
+                <div class="px-4 py-2 text-sm text-gray-700 font-medium">
+                    Hi, {{ auth()->user()->name }}
+                </div>
+                <a href="{{ route('show.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Lihat Profil
+                </a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Profile Dropdown (Desktop) -->
+        <div class="hidden md:block relative" x-data="{ open: false }">
+            <button @click="open = !open" class="flex items-center space-x-2 text-gray-800 hover:text-blue-600">
                 <i class="fas fa-user"></i>
-                <span class="text-gray-800 mx-1">Hi,</span>
-                <span class="text-gray-800">{{ auth()->user()->name }}</span>
-            </a>
-        </nav>
+                <span>Hi, {{ auth()->user()->name }}</span>
+                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                     stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            <div x-show="open" x-cloak class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-md py-2 z-50">
+                <a href="{{ route('show.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Lihat Profil
+                </a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 </header>
-
-

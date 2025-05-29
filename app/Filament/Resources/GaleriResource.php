@@ -31,6 +31,22 @@ class GaleriResource extends Resource
     protected static ?string $navigationLabel = 'Galeri';
     protected static ?string $slug = 'galeri';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_galeri');
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_galeri');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_galeri');
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_galeri');
+    }
 
     public static function form(Form $form): Form
     {

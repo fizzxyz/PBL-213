@@ -23,6 +23,23 @@ class CategoryResource extends Resource
 
     protected static ?string $navigationGroup = 'Content Management System';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_category');
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_category');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_category');
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_category');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

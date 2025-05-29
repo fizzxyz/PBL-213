@@ -31,6 +31,23 @@ class VideoResource extends Resource
     protected static ?string $navigationLabel = 'Video';
     protected static ?string $slug = 'video';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_video');
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_video');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_video');
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_video');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

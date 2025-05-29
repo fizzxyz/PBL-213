@@ -29,6 +29,22 @@ class KomentarResource extends Resource
     protected static ?string $navigationLabel = 'Komentar';
     protected static ?string $slug = 'komentar';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_komentar');
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_komentar');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_komentar');
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_komentar');
+    }
     public static function form(Form $form): Form
     {
         return $form

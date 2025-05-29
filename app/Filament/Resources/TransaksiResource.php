@@ -28,6 +28,23 @@ class TransaksiResource extends Resource
     protected static ?string $navigationLabel = 'Transaksi';
     protected static ?string $slug = 'transaksi';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_transaksi');
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_transaksi');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_transaksi');
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_transaksi');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

@@ -30,6 +30,23 @@ class CalendarResource extends Resource
     protected static ?string $navigationLabel = 'Calendar';
     protected static ?string $slug = 'calendar';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_calendar');
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_calendar');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_calendar');
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_calendar');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

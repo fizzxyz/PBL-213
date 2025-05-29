@@ -33,6 +33,26 @@ class ArtikelResource extends Resource
     protected static ?string $navigationLabel = 'Artikel';
     protected static ?string $slug = 'artikel';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_artikel');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_artikel');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_artikel');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_artikel');
+    }
+
 
     public static function form(Form $form): Form
     {

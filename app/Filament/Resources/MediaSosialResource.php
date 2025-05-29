@@ -30,6 +30,22 @@ class MediaSosialResource extends Resource
     protected static ?string $navigationLabel = 'Media Sosial';
     protected static ?string $slug = 'media-sosial';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_media_sosial');
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_media_sosial');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_media_sosial');
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_media_sosial');
+    }
     public static function form(Form $form): Form
     {
         return $form

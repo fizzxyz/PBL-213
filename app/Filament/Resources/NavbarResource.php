@@ -29,6 +29,23 @@ class NavbarResource extends Resource
     protected static ?string $navigationLabel = 'Navbar';
     protected static ?string $slug = 'navbar';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_navbar');
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_navbar');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_navbar');
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_navbar');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

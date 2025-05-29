@@ -23,6 +23,26 @@ class YayasanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Content Management System';
+
+    public static ?string $pluralModelLabel = 'Yayasan';
+    public static ?string $modelLabel = 'Yayasan';
+    public static ?string $modelSlug = 'yayasan';
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_yayasan');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_yayasan');
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_yayasan');
+    }
+
+
     public static function form(Form $form): Form
     {
         return $form

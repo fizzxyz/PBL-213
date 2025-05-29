@@ -27,6 +27,19 @@ class HomeContentResource extends Resource
 
     protected static ?string $navigationGroup = 'Content Management System';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_home_content');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_home_content');
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_home_content');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

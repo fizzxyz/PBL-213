@@ -29,6 +29,23 @@ class UnitPendidikanResource extends Resource
     protected static ?string $navigationLabel = 'Unit Pendidikan';
     protected static ?string $slug = 'unit-pendidikan';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_unit_pendidikan');
+    }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_unit_pendidikan');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_unit_pendidikan');
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_unit_pendidikan');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

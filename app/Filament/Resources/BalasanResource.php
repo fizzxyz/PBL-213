@@ -27,6 +27,26 @@ class BalasanResource extends Resource
     protected static ?string $navigationLabel = 'Balasan';
     protected static ?string $slug = 'balasan';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_balasan');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_balasan');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_balasan');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_balasan');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
