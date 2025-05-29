@@ -2,16 +2,16 @@
     <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Informasi -->
         <div>
-            <h2 class="text-2xl font-semibold mb-2">{{ $company->name }}</h2>
+            <h2 class="text-2xl font-semibold mb-2">{{ $yayasan->name }}</h2>
             <p class="text-sm text-gray-300 mb-6">
-                {{ $company->email }}
+                {{ $yayasan->email }}
             </p>
 
             <div class="mb-4 flex items-start space-x-2">
                 <i class="fa-brands fa-whatsapp text-xl mt-1"></i>
                 <div>
                     <p class="font-medium">Whatsapp:</p>
-                    <p class="text-gray-300">{{ $company->phone }}</p>
+                    <p class="text-gray-300">{{ $yayasan->phone }}</p>
                 </div>
             </div>
 
@@ -20,7 +20,7 @@
                 <div>
                     <p class="font-medium">Alamat:</p>
                     <p class="text-gray-300">
-                        {{ $company->address }}
+                        {{ $yayasan->address }}
                     </p>
                 </div>
             </div>
@@ -50,7 +50,7 @@
 
     <!-- Bawah Footer -->
     <div class="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-gray-400">
-        <p>{{ $company->name }} © 2025 All rights Reserved.</p>
+        <p>{{ $yayasan->name }} © 2025 All rights Reserved.</p>
         <div class="mt-4 flex justify-center space-x-6 text-white text-lg">
             <a href="#"><i class="fab fa-linkedin"></i></a>
             <a href="#"><i class="fab fa-facebook"></i></a>

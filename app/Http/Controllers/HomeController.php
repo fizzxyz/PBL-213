@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Video;
+use App\Models\Galeri;
 use App\Models\Artikel;
+use App\Models\Company;
+use App\Models\Yayasan;
 use App\Models\Calendar;
 use App\Models\Category;
-use App\Models\Galeri;
-use App\Models\Company;
 use App\Models\HomeContent;
 use Illuminate\Http\Request;
 use App\Models\UnitPendidikan;
-use App\Models\Video;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $company = Company::where('id', 1)->first();
+        $yayasan = Yayasan::where('id', 1)->first();
         $homeContent = HomeContent::where('id', 1)->first();
         $units = UnitPendidikan::all();
         $galeris = Galeri::latest()->get();
@@ -34,7 +35,7 @@ class HomeController extends Controller
             ->get();
         $calendars = Calendar::with('unitPendidikan')->get();
 
-        return view('dashboard', compact('company', 'homeContent', 'units', 'galeris', 'artikels', 'categories', 'pengumuman', 'videos', 'calendars'));
+        return view('dashboard', compact('yayasan', 'homeContent', 'units', 'galeris', 'artikels', 'categories', 'pengumuman', 'videos', 'calendars'));
 
     }
 }

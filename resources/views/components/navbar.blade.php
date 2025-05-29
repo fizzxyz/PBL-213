@@ -1,10 +1,10 @@
 <header id="navbar" class="fixed top-0 left-0 w-full z-10 bg-transparent bg-softyellow transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
 
-        <!-- Logo + Company Name -->
+        <!-- Logo + yayasan Name -->
         <div class="flex items-center space-x-2">
-            <img src="{{ $company->logo }}" alt="Logo" class="h-10" />
-            <span class="text-xl font-bold text-white text-change">{{ $company->name }}</span>
+            <img src="{{ $yayasan->logo }}" alt="Logo" class="h-10" />
+            <span class="text-xl font-bold text-white text-change">{{ $yayasan->name }}</span>
         </div>
 
         <!-- Hamburger Icon (Mobile only) -->

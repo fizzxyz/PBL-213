@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Models\Company;
 use App\Models\Penerimaan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;

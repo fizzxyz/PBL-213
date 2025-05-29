@@ -34,12 +34,14 @@ class ContentSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        DB::table('companies')->insert([
+        DB::table('yayasans')->insert([
             'name' => 'Darussalam Batam',
             'address' => 'Komp Perum Jaya Asri, Jalan Aviari, Buliang, Batu Aji, Kota Batam, Kepulauan Riau 29432',
             'phone' => '(0778) 361890',
             'email' => 'darussalam@sch.id',
             'logo' => '01JSVD9GJ0ZJT4ZSRZGR3MTSMY.png',
+            'sejarah' => 'Yayasan Darussalam Batam didirikan pada tahun 1995 dengan tujuan untuk menyediakan pendidikan berkualitas bagi anak-anak di Batam.',
+            'tentang' => 'Yayasan Darussalam Batam berkomitmen untuk memberikan pendidikan yang terbaik dan menciptakan lingkungan belajar yang kondusif bagi siswa.',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

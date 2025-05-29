@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Filament\Resources\CompanyResource\Pages;
+namespace App\Filament\Resources\YayasanResource\Pages;
 
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\CompanyResource;
+use App\Filament\Resources\YayasanResource;
 
-class ListCompanies extends ListRecords
+class ListYayasans extends ListRecords
 {
-    protected static string $resource = CompanyResource::class;
+    protected static string $resource = YayasanResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('Edit Company')
-                ->label('Edit Company')
+            Action::make('Edit Yayasan')
+                ->label('Edit Yayasan')
                 ->icon('heroicon-o-pencil')
                 ->url(fn () => static::getResource()::getUrl('edit', ['record' => 1]))
                 ->color('primary'),

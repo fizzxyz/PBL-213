@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Company;
+use App\Models\Yayasan;
 use App\Models\UnitPendidikan;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -24,8 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $company = Company::where('id', 1)->first();
-        View::share('company', $company);  // Share the company data globally
+        $yayasan = Yayasan::where('id', 1)->first();
+        View::share('yayasan', $yayasan);  // Share the company data globally
 
          // Ambil semua unit pendidikan
         $units = UnitPendidikan::with('navbars')->get();
