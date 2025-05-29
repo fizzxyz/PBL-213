@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Sluggable\HasSlug;
+use App\Models\Calendar;
 
 class UnitPendidikan extends Model
 {
@@ -42,6 +43,12 @@ class UnitPendidikan extends Model
     public function navbars()
     {
         return $this->hasMany(Navbar::class);
+    }
+
+    // Relasi ke Calendar
+    public function calendars()
+    {
+        return $this->hasMany(Calendar::class);
     }
 
     public function getSlugOptions(): SlugOptions

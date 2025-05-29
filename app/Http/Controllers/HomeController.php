@@ -32,9 +32,7 @@ class HomeController extends Controller
             ->orderBy('created_at', 'desc')
             ->take(8) // atau sesuai kebutuhan
             ->get();
-        $calendars = Calendar::select('title', 'start_date', 'end_date')->get();
-
-
+        $calendars = Calendar::with('unitPendidikan')->get();
 
         return view('dashboard', compact('company', 'homeContent', 'units', 'galeris', 'artikels', 'categories', 'pengumuman', 'videos', 'calendars'));
 

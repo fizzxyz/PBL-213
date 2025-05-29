@@ -46,10 +46,10 @@ const menuBtn = document.getElementById('menu-btn');
 
         function filterCards() {
             artikelCards.forEach(card => {
-                const cardUnit = card.getAttribute('data-unit');
+                const cardUnits = card.getAttribute('data-unit').split(',');
                 const cardCategory = card.querySelector('span').textContent.trim().toLowerCase();
 
-                const matchUnit = (selectedUnit === 'all' || cardUnit === selectedUnit);
+                const matchUnit = (selectedUnit === 'all' || cardUnits.includes(selectedUnit));
                 const matchCategory = (selectedCategory === 'all' || cardCategory === selectedCategory);
 
                 if (matchUnit && matchCategory) {

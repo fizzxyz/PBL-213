@@ -79,48 +79,52 @@
       </div>
 
       <!-- Filter Unit Pendidikan -->
-        <div class="flex flex-wrap justify-center gap-4">
-            <button class="filter-unit-btn text-yellow-500 font-semibold border-b-2 border-yellow-500 pb-1" data-unit="all">Semua</button>
-            @foreach ($units as $unit)
-                <button class="filter-unit-btn text-gray-600 hover:text-yellow-500" data-unit="{{ $unit->slug }}">
-                    {{ $unit->nama }}
-                </button>
-            @endforeach
-        </div>
+      <div class="flex flex-wrap justify-center gap-4">
+          <button class="filter-unit-btn text-yellow-500 font-semibold border-b-2 border-yellow-500 pb-1" data-unit="all">Semua</button>
+          @foreach ($units as $unit)
+              <button class="filter-unit-btn text-gray-600 hover:text-yellow-500" data-unit="{{ $unit->slug }}">
+                  {{ $unit->nama }}
+              </button>
+          @endforeach
+      </div>
 
-        <div class="mb-2"></div>
+      <div class="mb-2"></div>
 
-        <!-- Filter Kategori -->
-        <div class="flex flex-wrap justify-center gap-4 mb-10 border-b pb-4">
-            <button class="filter-category-btn text-yellow-500 font-semibold border-b-2 border-yellow-500 pb-1" data-category="all">Semua</button>
-            @foreach ($categories as $category)
-                <button class="filter-category-btn text-gray-600 font-semibold pb-1 hover:text-yellow-500" data-category="{{ $category->slug }}">
-                    {{ $category->name }}
-                </button>
-            @endforeach
-        </div>
+      <!-- Filter Kategori -->
+      <div class="flex flex-wrap justify-center gap-4 mb-10 border-b pb-4">
+          <button class="filter-category-btn text-yellow-500 font-semibold border-b-2 border-yellow-500 pb-1" data-category="all">Semua</button>
+          @foreach ($categories as $category)
+              <button class="filter-category-btn text-gray-600 font-semibold pb-1 hover:text-yellow-500" data-category="{{ $category->slug }}">
+                  {{ $category->name }}
+              </button>
+          @endforeach
+      </div>
 
-    <!-- Grid Artikel -->
-    <div class="grid md:grid-cols-3 gap-6" id="artikel-container">
-        @foreach ($artikels as $artikel)
-            @foreach ($artikel->unitPendidikans as $unit)
-                <a href="{{ route('artikel.show', $artikel->slug) }}" class="block artikel-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition" data-unit="{{ $unit->slug }}">
-                    <div class="relative">
-                        <img src="{{ asset($artikel->thumbnail) }}" class="w-full h-52 object-cover" alt="">
-                        <span class="absolute top-2 right-2 bg-yellow-300 text-black px-3 py-1 text-sm font-semibold rounded-full">
-                            {{ $artikel->category->name }}
-                        </span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-semibold text-gray-800 mb-1">{{ $artikel->judul }}</h3>
-                        <p class="text-gray-500 text-sm">{{ \Carbon\Carbon::parse($artikel->created_at)->format('F d, Y') }}</p>
-                    </div>
-                </a>
-            @endforeach
-        @endforeach
+      <!-- Grid Artikel -->
+      <div class="grid md:grid-cols-3 gap-6" id="artikel-container">
+          @foreach ($artikels as $artikel)
+              @php
+                  $unitSlugs = $artikel->unitPendidikans->pluck('slug')->implode(',');
+              @endphp
+              <a href="{{ route('artikel.show', $artikel->slug) }}"
+                 class="block artikel-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
+                 data-unit="{{ $unitSlugs }}">
+                  <div class="relative">
+                      <img src="{{ asset($artikel->thumbnail) }}" class="w-full h-52 object-cover" alt="">
+                      <span class="absolute top-2 right-2 bg-yellow-300 text-black px-3 py-1 text-sm font-semibold rounded-full">
+                          {{ $artikel->category->name }}
+                      </span>
+                  </div>
+                  <div class="p-4">
+                      <h3 class="font-semibold text-gray-800 mb-1">{{ $artikel->judul }}</h3>
+                      <p class="text-gray-500 text-sm">{{ \Carbon\Carbon::parse($artikel->created_at)->format('F d, Y') }}</p>
+                  </div>
+              </a>
+          @endforeach
+      </div>
     </div>
-    </div>
-  </section>
+</section>
+
 
   <section class="mt-20 px-4 md:px-16 bg-contain bg-center py-10 rounded-xl" style="background-image: url('/home/pengumuman.png');">
     <h2 class="text-2xl font-bold text-yellow-500">Pengumuman & Event</h2>
@@ -225,6 +229,14 @@
     <div class="max-w-6xl mx-auto px-4">
         <h2 class="text-3xl font-bold text-yellow-500 mb-1">Kalender Akademik</h2>
         <p class="text-gray-500 mb-8">Berikut ini adalah kalender yayasan Darussalam Batam</p>
+        <div class="flex flex-wrap justify-center gap-4 mb-6">
+            <button class="filter-unit-btn text-yellow-500 font-semibold border-b-2 border-yellow-500 pb-1" data-unit="all">Semua</button>
+            @foreach ($units as $unit)
+                <button class="filter-unit-btn text-gray-600 hover:text-yellow-500" data-unit="{{ $unit->slug }}">
+                    {{ $unit->nama }}
+                </button>
+            @endforeach
+        </div>
 
         <div class="border p-6 rounded-md shadow-md grid grid-cols-2 gap-4">
             <!-- Kalender -->
@@ -253,11 +265,33 @@
     </div>
 
     <script>
-        const events = @json($calendars); // dari controller
+        const allEvents = @json($calendars); // dari controller, pastikan setiap event punya unit_pendidikan.slug
         let currentDate = new Date();
+        let filteredEvents = allEvents;
 
         function stripTime(date) {
             return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        }
+
+        function filterByUnitSlug(slug) {
+            // Ganti warna tombol aktif
+            document.querySelectorAll('.filter-unit-btn').forEach(btn => {
+                btn.classList.remove('text-yellow-500', 'font-semibold', 'border-b-2', 'border-yellow-500', 'pb-1');
+                btn.classList.add('text-gray-600');
+            });
+
+            const activeBtn = document.querySelector(`.filter-unit-btn[data-unit="${slug}"]`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-600');
+                activeBtn.classList.add('text-yellow-500', 'font-semibold', 'border-b-2', 'border-yellow-500', 'pb-1');
+            }
+
+            // Filter event berdasarkan slug unit
+            filteredEvents = slug === 'all'
+                ? allEvents
+                : allEvents.filter(e => e.unit_pendidikan?.slug === slug);
+
+            renderCalendar();
         }
 
         function renderCalendar() {
@@ -269,7 +303,7 @@
 
             const firstDay = new Date(year, month, 1);
             const lastDay = new Date(year, month + 1, 0);
-            const startDay = (firstDay.getDay() + 6) % 7; // Senin = 0
+            const startDay = (firstDay.getDay() + 6) % 7;
 
             daysEl.innerHTML = '';
             monthEl.textContent = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
@@ -281,7 +315,7 @@
             for (let d = 1; d <= lastDay.getDate(); d++) {
                 const current = stripTime(new Date(year, month, d));
 
-                const hasEvent = events.some(e => {
+                const hasEvent = filteredEvents.some(e => {
                     const start = stripTime(new Date(e.start_date));
                     const end = stripTime(new Date(e.end_date || e.start_date));
                     return current >= start && current <= end;
@@ -290,9 +324,8 @@
                 daysEl.innerHTML += `<div class="${hasEvent ? 'text-yellow-500 font-bold' : ''}">${d}</div>`;
             }
 
-            // Event List
             const thisMonth = `${year}-${(month + 1).toString().padStart(2, '0')}`;
-            const thisMonthEvents = events.filter(e => e.start_date.startsWith(thisMonth));
+            const thisMonthEvents = filteredEvents.filter(e => e.start_date.startsWith(thisMonth));
 
             eventList.innerHTML = thisMonthEvents.length
                 ? thisMonthEvents.map(e => `<li><strong>${e.title}</strong><br><small>${e.start_date}${e.end_date ? ' – ' + e.end_date : ''}</small></li>`).join('')
@@ -304,6 +337,18 @@
             renderCalendar();
         }
 
-        document.addEventListener('DOMContentLoaded', renderCalendar);
+        // Pasang event listener untuk semua tombol filter
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.filter-unit-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const unitSlug = btn.getAttribute('data-unit');
+                    filterByUnitSlug(unitSlug);
+                });
+            });
+
+            // Tampilkan awal semua unit
+            filterByUnitSlug('all');
+        });
     </script>
+
 </section>
