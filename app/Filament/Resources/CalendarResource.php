@@ -23,6 +23,13 @@ class CalendarResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Content Management System';
+
+    protected static ?string $pluralModelLabel = 'Calendar';
+    protected static ?string $modelLabel = 'Calendar';
+    protected static ?string $navigationLabel = 'Calendar';
+    protected static ?string $slug = 'calendar';
+
     public static function form(Form $form): Form
     {
         return $form

@@ -22,6 +22,13 @@ class NavbarResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Content Management System';
+
+    protected static ?string $pluralModelLabel = 'Navbar';
+    protected static ?string $modelLabel = 'Navbar';
+    protected static ?string $navigationLabel = 'Navbar';
+    protected static ?string $slug = 'navbar';
+
     public static function form(Form $form): Form
     {
         return $form

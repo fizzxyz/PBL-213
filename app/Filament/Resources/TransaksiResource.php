@@ -23,6 +23,11 @@ class TransaksiResource extends Resource
 
     protected static ?string $navigationGroup = 'PPDB Section';
 
+    protected static ?string $pluralModelLabel = 'Transaksi';
+    protected static ?string $modelLabel = 'Transaksi';
+    protected static ?string $navigationLabel = 'Transaksi';
+    protected static ?string $slug = 'transaksi';
+
     public static function form(Form $form): Form
     {
         return $form

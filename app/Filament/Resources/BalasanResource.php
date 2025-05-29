@@ -22,6 +22,11 @@ class BalasanResource extends Resource
 
     protected static ?string $navigationGroup = 'Content Management System';
 
+    protected static ?string $pluralModelLabel = 'Balasan';
+    protected static ?string $modelLabel = 'Balasan';
+    protected static ?string $navigationLabel = 'Balasan';
+    protected static ?string $slug = 'balasan';
+
     public static function form(Form $form): Form
     {
         return $form

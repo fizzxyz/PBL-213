@@ -22,6 +22,13 @@ class UnitPendidikanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
+    protected static ?string $navigationGroup = 'Content Management System';
+
+    protected static ?string $pluralModelLabel = 'Unit Pendidikan';
+    protected static ?string $modelLabel = 'Unit Pendidikan';
+    protected static ?string $navigationLabel = 'Unit Pendidikan';
+    protected static ?string $slug = 'unit-pendidikan';
+
     public static function form(Form $form): Form
     {
         return $form

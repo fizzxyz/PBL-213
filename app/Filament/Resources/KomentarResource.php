@@ -24,6 +24,11 @@ class KomentarResource extends Resource
 
     protected static ?string $navigationGroup = 'Content Management System';
 
+    protected static ?string $pluralModelLabel = 'Komentar';
+    protected static ?string $modelLabel = 'Komentar';
+    protected static ?string $navigationLabel = 'Komentar';
+    protected static ?string $slug = 'komentar';
+
     public static function form(Form $form): Form
     {
         return $form

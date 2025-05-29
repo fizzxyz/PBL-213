@@ -25,6 +25,11 @@ class MediaSosialResource extends Resource
 
     protected static ?string $navigationGroup = 'Content Management System';
 
+    protected static ?string $pluralModelLabel = 'Media Sosial';
+    protected static ?string $modelLabel = 'Media Sosial';
+    protected static ?string $navigationLabel = 'Media Sosial';
+    protected static ?string $slug = 'media-sosial';
+
     public static function form(Form $form): Form
     {
         return $form

@@ -28,6 +28,11 @@ class PendaftaranResource extends Resource
 
     protected static ?string $navigationGroup = 'PPDB Section';
 
+    protected static ?string $pluralModelLabel = 'Pendaftaran';
+    protected static ?string $modelLabel = 'Pendaftaran';
+    protected static ?string $navigationLabel = 'Pendaftaran';
+    protected static ?string $slug = 'pendaftaran';
+
     public static function form(Form $form): Form
     {
         return $form

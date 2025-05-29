@@ -28,6 +28,12 @@ class ArtikelResource extends Resource
 
     protected static ?string $navigationGroup = 'Content Management System';
 
+    protected static ?string $pluralModelLabel = 'Artikel';
+    protected static ?string $modelLabel = 'Artikel';
+    protected static ?string $navigationLabel = 'Artikel';
+    protected static ?string $slug = 'artikel';
+
+
     public static function form(Form $form): Form
     {
         return $form

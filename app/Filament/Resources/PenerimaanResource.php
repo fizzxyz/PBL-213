@@ -25,6 +25,12 @@ class PenerimaanResource extends Resource
 
     protected static ?string $navigationGroup = 'PPDB Section';
 
+    protected static ?string $pluralModelLabel = 'Penerimaan';
+    protected static ?string $modelLabel = 'Penerimaan';
+    protected static ?string $navigationLabel = 'Penerimaan';
+    protected static ?string $slug = 'penerimaan';
+
+
     public static function form(Form $form): Form
     {
         return $form
