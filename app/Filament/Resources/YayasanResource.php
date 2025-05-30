@@ -12,6 +12,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\YayasanResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -63,6 +64,18 @@ class YayasanResource extends Resource
                     ->required()
                     ->label('Email')
                     ->placeholder('Enter email address'),
+                RichEditor::make('sejarah')
+                    ->label('Sejarah Yayasan')
+                    ->required()
+                    ->columnSpan('full'),
+                RichEditor::make('tentang')
+                    ->label('Tentang Yayasan')
+                    ->required()
+                    ->columnSpan('full'),
+                RichEditor::make('vision')
+                    ->label('Visi & Misi Yayasan')
+                    ->required()
+                    ->columnSpan('full'),
                 FileUpload::make('logo')
                     ->label('Logo')
                     ->image()

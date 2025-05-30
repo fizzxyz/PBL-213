@@ -41,6 +41,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/penerimaan/riwayat', [PendaftaranController::class, 'riwayat'])->name('penerimaan.riwayat');
 });
 
+Route::middleware(['auth', 'role:admin|super_admin'])->group(function () {
+    Route::post('/home-content/update', [HomeController::class, 'updateContent'])
+        ->name('home-content.update');
+    Route::put('/yayasan/update-content', [HomeController::class, 'updateYayasan'])->name('yayasan.update.content');
+});
+
 Route::post('/payment/notification', [TransaksiController::class, 'handleNotification'])->name('payment.notification');
 
 // Route untuk halaman setelah pembayaran selesai (optional)

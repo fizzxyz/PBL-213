@@ -17,8 +17,8 @@
 
         <!-- Desktop Menu -->
         <nav class="hidden md:flex space-x-6">
-            <a href="#" class="text-white hover:text-yellow-300 text-change">Beranda</a>
-            <a href="#" class="text-white hover:text-yellow-300 text-change">Yayasan</a>
+            <a href="{{ route('home.index') }}" class="text-white hover:text-yellow-300 text-change">Beranda</a>
+            <a href="{{ route('home.yayasan') }}" class="text-white hover:text-yellow-300 text-change">Yayasan</a>
             <!-- Dropdown Unit Pendidikan -->
             <div x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" class="relative group">
 

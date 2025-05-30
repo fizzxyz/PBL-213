@@ -12,8 +12,14 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustProxies(at: '*');
+
         $middleware->validateCsrfTokens(except: [
             '/payment/notification', // Exclude Midtrans notification route
+        ]);
+
+        // Daftarkan middleware 'role'
+        $middleware->alias([
+            'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

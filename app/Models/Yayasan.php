@@ -13,6 +13,8 @@ class Yayasan extends Model
         'email',
         'website',
         'logo',
+        'sejarah',
         'tentang',
+        'vision',
     ];
 }
