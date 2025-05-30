@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -52,6 +53,11 @@ class UserResource extends Resource
                     ->required()
                     ->email()
                     ->maxLength(255),
+                FileUpload::make('avatar')
+                    ->label('Avatar')
+                    ->image()
+                    ->directory('user/avatar')
+                    ->nullable(),
                 TextInput::make('nomor_hp')
                     ->label('Nomor HP')
                     ->maxLength(15),

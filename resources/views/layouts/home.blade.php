@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-ZuA+3NwCkG+y/sy1FjwHjQgx7+NaFXOaUR3eXDYzYKDbA5KqZb5C0sckJWQQYmiyG5LfnZl6UdqfGog3VKjVxw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <!-- Toastify JS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -32,6 +34,10 @@
     <main class="flex-grow">
         @yield('content')
     </main>
+
+    @livewire('chat-support')
+
+    @livewireScripts
 
     <x-footer />
 </body>
