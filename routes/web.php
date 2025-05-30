@@ -5,7 +5,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\ArtikelController;
+use App\Http\Controllers\BalasanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PendaftaranController;
@@ -25,6 +27,12 @@ Route::get('/artikel/{slug}', [ArtikelController::class, 'show'])->name('artikel
 Route::get('/galeri/{slug}', [GaleriController::class, 'show'])->name('galeri.show');
 Route::get('/video/{slug}', [VideoController::class, 'show'])->name('video.show');
 Route::get('/unit/{slug}', [UnitPendidikanController::class, 'show'])->name('unit.show');
+
+// Routes untuk komentar
+Route::post('/komentar', [KomentarController::class, 'store'])->name('komentar.store');
+
+// Routes untuk balasan
+Route::post('/balasan', [BalasanController::class, 'store'])->name('balasan.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/penerimaan', function () {

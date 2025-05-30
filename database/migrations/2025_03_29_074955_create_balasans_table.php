@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('balasans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('komentar_id')->constrained()->cascadeOnDelete();
+            $table->string('guest_name')->nullable();
+            $table->string('guest_email')->nullable();
             $table->text('isi');
             $table->softDeletes();
             $table->timestamps();

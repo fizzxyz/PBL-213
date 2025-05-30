@@ -29,7 +29,7 @@ class Artikel extends Model
     }
 
     // Relasi ke Komentar
-    public function komentars()
+    public function comments()
     {
         return $this->hasMany(Komentar::class);
     }

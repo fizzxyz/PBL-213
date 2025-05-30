@@ -15,6 +15,8 @@ class Komentar extends Model
         'user_id',
         'artikel_id',
         'isi',
+        'guest_name',
+        'guest_email',
     ];
 
     public function user(): BelongsTo
@@ -27,7 +29,7 @@ class Komentar extends Model
         return $this->belongsTo(Artikel::class);
     }
 
-    public function balasan(): HasMany
+    public function balasans(): HasMany
     {
         return $this->hasMany(Balasan::class, 'komentar_id');
     }

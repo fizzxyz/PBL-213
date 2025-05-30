@@ -3,7 +3,7 @@
 
         <!-- Logo + yayasan Name -->
         <div class="flex items-center space-x-2">
-            <img src="{{ $yayasan->logo }}" alt="Logo" class="h-10" />
+            <img src="{{ asset('storage/' . $yayasan->logo) }}" alt="Logo" class="h-10" />
             <span class="text-xl font-bold text-white text-change">{{ $yayasan->name }}</span>
         </div>
 

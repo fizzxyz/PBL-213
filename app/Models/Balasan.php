@@ -14,6 +14,8 @@ class Balasan extends Model
         'user_id',
         'komentar_id',
         'isi',
+        'guest_name',
+        'guest_email',
     ];
 
     public function komentar(): BelongsTo
