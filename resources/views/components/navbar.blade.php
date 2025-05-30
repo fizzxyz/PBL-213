@@ -69,8 +69,8 @@
 
     <!-- Mobile Menu -->
     <nav id="mobile-menu" class="md:hidden hidden px-4 pb-4 space-y-2 bg-transparent">
-        <a href="#" class="block text-white hover:text-yellow-300 text-change">Beranda</a>
-        <a href="#" class="block text-white hover:text-yellow-300 text-change">Yayasan</a>
+        <a href="{{ route('home.index') }}" class="block text-white hover:text-yellow-300 text-change">Beranda</a>
+        <a href="{{ route('home.yayasan') }}" class="block text-white hover:text-yellow-300 text-change">Yayasan</a>
 
         <!-- Unit Pendidikan -->
         <div x-data="{ open: false }" class="text-white">

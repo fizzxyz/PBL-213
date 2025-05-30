@@ -13,6 +13,7 @@ use App\Models\HomeContent;
 use Illuminate\Http\Request;
 use App\Models\UnitPendidikan;
 use Illuminate\Support\Facades\Validator;
+use Mews\Purifier\Facades\Purifier;
 
 class HomeController extends Controller
 {
@@ -46,9 +47,6 @@ class HomeController extends Controller
         return view('yayasan', compact('yayasan'));
     }
 
-    /**
-     * Update the home content via AJAX
-     */
     public function updateContent(Request $request)
     {
         try {
@@ -80,28 +78,25 @@ class HomeController extends Controller
                 ], 422);
             }
 
-            // Ambil record pertama atau buat baru jika belum ada
             $homeContent = HomeContent::first();
 
             if (!$homeContent) {
                 $homeContent = new HomeContent();
-                // Set default values untuk field yang required
                 $homeContent->hero_title = $request->hero_title ?? 'Default Hero Title';
-                $homeContent->hero_text = $request->hero_text ?? 'Default Hero Text';
+                $homeContent->hero_text = Purifier::clean($request->hero_text ?? 'Default Hero Text');
                 $homeContent->hero_sm_title = $request->hero_sm_title ?? 'Default Small Title';
                 $homeContent->card_title = $request->card_title ?? 'Default Card Title';
-                $homeContent->card_text = $request->card_text ?? 'Default Card Text';
+                $homeContent->card_text = Purifier::clean($request->card_text ?? 'Default Card Text');
                 $homeContent->galeri_title = $request->galeri_title ?? 'Default Galeri Title';
                 $homeContent->galeri_sm_title = $request->galeri_sm_title ?? 'Default Galeri Small Title';
                 $homeContent->video_title = $request->video_title ?? 'Default Video Title';
                 $homeContent->video_sm_title = $request->video_sm_title ?? 'Default Video Small Title';
                 $homeContent->pengantar_title = $request->pengantar_title ?? 'Default Pengantar Title';
                 $homeContent->pengantar_sm_title = $request->pengantar_sm_title ?? 'Default Pengantar Small Title';
-                $homeContent->pengantar_text = $request->pengantar_text ?? 'Default Pengantar Text';
+                $homeContent->pengantar_text = Purifier::clean($request->pengantar_text ?? 'Default Pengantar Text');
                 $homeContent->pengantar_sm_text1 = $request->pengantar_sm_text1 ?? 'Default Name';
                 $homeContent->pengantar_sm_text2 = $request->pengantar_sm_text2 ?? 'Default Position';
             } else {
-                // Update hanya field yang dikirim
                 $fillableFields = [
                     'hero_title', 'hero_text', 'hero_sm_title', 'hero_image',
                     'card_title', 'card_text',
@@ -111,9 +106,14 @@ class HomeController extends Controller
                     'pengantar_image', 'pengantar_sm_text1', 'pengantar_sm_text2'
                 ];
 
+                $sanitizeFields = ['pengantar_text'];
+
                 foreach ($fillableFields as $field) {
                     if ($request->has($field)) {
-                        $homeContent->$field = $request->$field;
+                        $value = $request->$field;
+                        $homeContent->$field = in_array($field, $sanitizeFields)
+                            ? Purifier::clean($value)
+                            : $value;
                     }
                 }
             }
@@ -141,14 +141,24 @@ class HomeController extends Controller
             'content' => 'required|string',
         ]);
 
-        $yayasan = Yayasan::first(); // atau berdasarkan ID
+        $cleanContent = Purifier::clean($request->content);
 
-        $yayasan->{$request->section} = $request->content;
+        $yayasan = Yayasan::first();
+
+        if (!$yayasan) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data yayasan tidak ditemukan.'
+            ], 404);
+        }
+
+        $yayasan->{$request->section} = $cleanContent;
         $yayasan->save();
 
         return response()->json([
             'success' => true,
-            'updated_html' => $request->content
+            'updated_html' => $cleanContent,
         ]);
     }
+
 }

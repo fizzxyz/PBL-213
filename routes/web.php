@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin|super_admin'])->group(function () {
     Route::post('/home-content/update', [HomeController::class, 'updateContent'])
         ->name('home-content.update');
-    Route::put('/yayasan/update-content', [HomeController::class, 'updateYayasan'])->name('yayasan.update.content');
+    Route::post('/yayasan/update-content', [HomeController::class, 'updateYayasan'])->name('yayasan.update.content');
 });
 
 Route::post('/payment/notification', [TransaksiController::class, 'handleNotification'])->name('payment.notification');

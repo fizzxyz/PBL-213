@@ -336,7 +336,7 @@
             </div>
             <div class="form-group">
                 <label>Card Text</label>
-                <textarea name="card_text">{{ $homeContent->card_text }}</textarea>
+                <input type="text" name="card_text" value="{{ $homeContent->card_text }}">
             </div>
             <div class="loading" id="cardLoading">Menyimpan...</div>
             <button type="button" class="btn-primary" onclick="saveContent('card')">Simpan</button>
@@ -471,7 +471,7 @@
                             ['bold', 'italic', 'underline', 'strike'],
                             [{ 'color': [] }, { 'background': [] }],
                             [{ 'align': [] }],
-                            ['link', 'blockquote', 'code-block'],
+                            ['link', 'blockquote'],
                             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                             ['clean']
                         ]
