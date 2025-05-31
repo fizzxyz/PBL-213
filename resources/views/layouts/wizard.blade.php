@@ -31,6 +31,9 @@
 
     </main>
 
+    @livewire('chat-support')
+
+    @livewireScripts
 </body>
 
 </html>

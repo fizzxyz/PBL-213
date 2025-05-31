@@ -8,6 +8,7 @@ use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\BalasanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KomentarController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\PenerimaanController;
 use App\Http\Controllers\PendaftaranController;

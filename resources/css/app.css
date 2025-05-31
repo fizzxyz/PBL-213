@@ -504,3 +504,45 @@ input:checked + .slider:before {
         opacity: 1;
     }
 }
+
+.error-message {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+.form-group.error input {
+    border-color: #d32f2f;
+    background-color: #ffebee;
+}
+
+.register-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.form-group {
+    transition: transform 0.3s ease;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+.form-group.error input {
+    border-color: #d32f2f;
+    background-color: #ffebee;
+}
+
+.register-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.form-group {
+    transition: transform 0.3s ease;
+}

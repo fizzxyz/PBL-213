@@ -63,7 +63,7 @@
                 </div>
             </div>
             <a href="#" class="text-white hover:text-yellow-300 text-change">Galeri</a>
-            <a href="{{ route('penerimaan') }}" class="text-white hover:text-yellow-300 text-change">PPDB</a>
+            <a href="{{ auth()->check() ? route('penerimaan') : route('register') }}" class="text-white hover:text-yellow-300 text-change">PPDB</a>
         </nav>
     </div>
 

@@ -3,8 +3,10 @@
     <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
         <!-- Logo + Yayasan Name -->
         <div class="flex items-center space-x-2">
+            <a href="{{ route('home.index') }}" class="flex items-center space-x-2">
             <img src="{{ asset('storage/' . $yayasan->logo) }}" alt="Logo" class="h-10" />
             <span class="text-xl font-bold text-black">{{ $yayasan->name }}</span>
+            </a>
         </div>
 
         <!-- Hamburger Icon (Mobile) -->
