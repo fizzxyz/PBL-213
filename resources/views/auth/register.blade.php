@@ -1,5 +1,5 @@
 @extends('layouts.daftar')
-<body style="background: url('{{ asset('storage/home/yayasan/background.png') }}') center center / cover no-repeat;" class="min-h-screen flex items-center justify-center p-5 relative overflow-hidden">
+<body style="background: url('{{ asset('storage/' . $homeContent->hero_image) }}') center center / cover no-repeat;" class="min-h-screen flex items-center justify-center p-5 relative overflow-hidden">
     <!-- Background Overlay -->
     <div class="fixed inset-0 bg-opacity-40 backdrop-blur-sm z-0"></div>
 
@@ -8,7 +8,7 @@
     <div class="absolute -bottom-1/3 -left-1/4 w-80 h-80 bg-gradient-radial from-orange-300 to-transparent opacity-10 rounded-full floating-circle"></div>
 
     <!-- Main Container - Increased width, reduced height -->
-    <div class="glass-card rounded-2xl shadow-2xl overflow-hidden max-w-7xl w-full min-h-[480px] flex relative z-10">
+    <div class="glass-card rounded-2xl mt-7 shadow-2xl overflow-hidden max-w-7xl w-full min-h-[480px] flex relative z-10">
 
         <!-- Welcome Section -->
         <div class="flex-1 welcome-bg p-12 flex flex-col justify-center text-white relative overflow-hidden border-r border-white border-opacity-20">

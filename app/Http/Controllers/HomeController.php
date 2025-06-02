@@ -44,7 +44,8 @@ class HomeController extends Controller
     public function getYayasan()
     {
         $yayasan = Yayasan::where('id', 1)->first();
-        return view('yayasan', compact('yayasan'));
+        $homeContent = HomeContent::where('id', 1)->first();
+        return view('yayasan', compact('yayasan', 'homeContent'));
     }
 
     public function updateContent(Request $request)

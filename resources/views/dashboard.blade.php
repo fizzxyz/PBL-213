@@ -25,7 +25,7 @@
 
 
 <!-- Hero Section -->
-<section class="relative h-screen bg-cover bg-center editable-section" style="background-image: url({{ $homeContent->hero_image }})">
+<section class="relative h-screen bg-cover bg-center editable-section" style="background-image: url('{{ asset('storage/' . $homeContent->hero_image) }}')">
     <button class="edit-btn" onclick="openEditModal('hero')">Edit Hero</button>
     <div class="absolute inset-0 bg-black bg-opacity-50 z-0"></div>
 
@@ -71,7 +71,7 @@
 
       <!-- Foto & Nama -->
       <div class="md:col-span-2 relative flex flex-col items-center text-center md:text-left">
-        <img src="{{ $homeContent->pengantar_image }}" alt="Ketua Yayasan" class="rounded-lg size-60 mb-4 shadow-lg z-0">
+        <img src="{{ asset('storage/' . $homeContent->pengantar_image) }}" alt="Ketua Yayasan" class="rounded-lg size-60 mb-4 shadow-lg z-0">
 
         <!-- Card nama/jabatan nimpa gambar -->
         <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-yellow-300 rounded-full text-base font-semibold text-black shadow-lg z-10 w-60 text-center">

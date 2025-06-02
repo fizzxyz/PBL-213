@@ -19,7 +19,7 @@
 @endif
 @endauth
 
-<section style="padding: 200px 20px; background: url('home/yayasan/background.png') center/cover no-repeat; color: white; text-align: center;">
+<section style="padding: 200px 20px; background: url('{{ asset('storage/' . $homeContent->hero_image) }}') center/cover no-repeat; color: white; text-align: center;">
     <h1 style="font-size: 2.5em; font-weight: bold; color: #FFD700;">Tentang Yayasan {{ $yayasan->name }}</h1>
 </section>
 
