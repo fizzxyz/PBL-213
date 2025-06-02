@@ -48,12 +48,29 @@ inputs.forEach((input) => {
 });
 
 // Phone number formatting
-document.getElementById("phone").addEventListener("input", function (e) {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.startsWith("0")) {
-        value = "+62" + value.substring(1);
-    } else if (!value.startsWith("+62") && value.length > 0) {
-        value = "+62" + value;
+const phoneInput = document.getElementById("phone");
+
+phoneInput.addEventListener("input", function (e) {
+    let cursorPos = phoneInput.selectionStart;
+    let value = phoneInput.value;
+
+    // Hapus semua karakter non-digit, kecuali awalan + (untuk +62)
+    let digits = value.replace(/[^0-9]/g, "");
+
+    if (digits.startsWith("0")) {
+        digits = "62" + digits.substring(1);
+    } else if (!digits.startsWith("62")) {
+        digits = "62" + digits;
     }
-    e.target.value = value;
+
+    const formatted = "+" + digits;
+
+    // Update nilai hanya jika berbeda
+    if (phoneInput.value !== formatted) {
+        phoneInput.value = formatted;
+
+        // Perbarui posisi kursor agar tidak loncat
+        phoneInput.setSelectionRange(formatted.length, formatted.length);
+    }
 });
+

@@ -32,7 +32,7 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => 'required|string|max:20',
+            'phone' => ['required', 'string', 'max:20', 'unique:'.User::class.',nomor_hp'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -47,6 +47,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('penerimaan', absolute: false));
+        return redirect()->route('verification.notice')
+            ->with('status', 'Email verifikasi telah dikirim! Silakan cek email Anda.');
     }
 }

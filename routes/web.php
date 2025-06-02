@@ -35,7 +35,7 @@ Route::post('/komentar', [KomentarController::class, 'store'])->name('komentar.s
 // Routes untuk balasan
 Route::post('/balasan', [BalasanController::class, 'store'])->name('balasan.store');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/penerimaan', function () {
         return view('penerimaan');
     })->name('penerimaan');

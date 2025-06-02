@@ -60,3 +60,37 @@
         </div>
     </div>
 </header>
+
+@if(request()->has('verified') && request()->verified == 1)
+    <div id="verif-alert" class="fixed top-[70px] left-1/2 transform -translate-x-1/2 z-50 bg-green-100 border border-green-400 text-green-700 px-6 py-3 rounded-md shadow-md flex items-center space-x-3 animate-slide-down">
+        <svg class="animate-spin h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        <span>Email anda sudah terverifikasi</span>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const alert = document.getElementById('verif-alert');
+            if(alert) alert.remove();
+        }, 5000);
+    </script>
+
+    <style>
+        @keyframes slide-down {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -10px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .animate-slide-down {
+            animation: slide-down 0.3s ease-out;
+        }
+    </style>
+@endif
