@@ -13,7 +13,7 @@ class UnitPendidikan extends Model
 {
     use HasFactory, SoftDeletes, HasSlug;
 
-    protected $fillable = ['nama', 'alamat', 'about', 'slug'];
+    protected $fillable = ['nama', 'alamat', 'about', 'slug', 'image', 'logo', 'visi', 'misi'];
 
     // Relasi ke User
     public function users()

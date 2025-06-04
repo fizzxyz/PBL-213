@@ -10,6 +10,7 @@ use App\Models\UnitPendidikan;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -63,6 +64,22 @@ class UnitPendidikanResource extends Resource
                 RichEditor::make('about')
                     ->required()
                     ->label('Tentang Unit Pendidikan')
+                    ->columnSpanFull(),
+                FileUpload::make('image')
+                    ->label('Gambar Unit Pendidikan')
+                    ->image()
+                    ->directory('unit/image')
+                    ->nullable(),
+                FileUpload::make('logo')
+                    ->label('Logo Unit Pendidikan')
+                    ->image()
+                    ->directory('unit/logo')
+                    ->required(),
+                RichEditor::make('visi')
+                    ->label('Visi Unit Pendidikan')
+                    ->columnSpanFull(),
+                RichEditor::make('misi')
+                    ->label('Misi Unit Pendidikan')
                     ->columnSpanFull(),
             ]);
     }

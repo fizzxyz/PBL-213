@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\ArtikelController;
@@ -28,6 +29,7 @@ Route::get('/artikel/{slug}', [ArtikelController::class, 'show'])->name('artikel
 Route::get('/galeri/{slug}', [GaleriController::class, 'show'])->name('galeri.show');
 Route::get('/video/{slug}', [VideoController::class, 'show'])->name('video.show');
 Route::get('/unit/{slug}', [UnitPendidikanController::class, 'show'])->name('unit.show');
+Route::get('/unit/{slug}/tentang', [UnitPendidikanController::class, 'tentang'])->name('unit.tentang');
 
 // Routes untuk komentar
 Route::post('/komentar', [KomentarController::class, 'store'])->name('komentar.store');

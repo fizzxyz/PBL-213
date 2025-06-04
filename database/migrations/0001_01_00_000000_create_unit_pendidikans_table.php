@@ -15,8 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('slug')->unique();
+            $table->text('image')->nullable();
+            $table->text('logo');
             $table->string('alamat');
             $table->text('about');
+            $table->text('visi');
+            $table->text('misi');
             $table->softDeletes();
             $table->timestamps();
         });

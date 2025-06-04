@@ -8,7 +8,7 @@
         </div>
 
         <!-- Hamburger Icon (Mobile only) -->
-        <button id="menu-btn" class="md:hidden text-white focus:outline-none">
+        <button id="menu-btn" class="md:hidden text-white text-change focus:outline-none">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
                 stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 6h16M4 12h16M4 18h16" />
@@ -38,26 +38,30 @@
                             <a href="{{ route('unit.show', $unit->slug) }}"
                                 class="flex items-center justify-between px-4 py-2 hover:bg-yellow-100 whitespace-nowrap">
                                 {{ $unit->nama }}
-                                @if ($unit->navbars->count())
-                                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M9 5l7 7-7 7" />
-                                    </svg>
-                                @endif
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 5l7 7-7 7" />
+                                </svg>
                             </a>
 
                             <!-- Submenu -->
-                            @if ($unit->navbars->count())
-                                <div x-show="subOpen" x-cloak
-                                    class="absolute left-full top-0 ml-1 w-48 bg-white text-gray-800 rounded shadow-lg z-40">
-                                    @foreach ($unit->navbars as $nav)
-                                        <a href="{{ url('artikel/' . $nav->cta_link) }}"
-                                            class="block px-4 py-2 hover:bg-yellow-100 whitespace-nowrap">
-                                            {{ strtoupper($nav->cta_text) }}
-                                        </a>
-                                    @endforeach
-                                </div>
-                            @endif
+                            <div x-show="subOpen" x-cloak
+                                class="absolute left-full top-0 ml-1 w-48 bg-white text-gray-800 rounded shadow-lg z-40">
+
+                                <!-- Tentang Option (Default) -->
+                                <a href="{{ route('unit.tentang', $unit->slug) }}"
+                                    class="block px-4 py-2 hover:bg-yellow-100 whitespace-nowrap border-b border-gray-200">
+                                    TENTANG
+                                </a>
+
+                                <!-- Custom Navbar Options -->
+                                @foreach ($unit->navbars as $nav)
+                                    <a href="{{ url('artikel/' . $nav->cta_link) }}"
+                                        class="block px-4 py-2 hover:bg-yellow-100 whitespace-nowrap">
+                                        {{ strtoupper($nav->cta_text) }}
+                                    </a>
+                                @endforeach
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -73,8 +77,8 @@
         <a href="{{ route('home.yayasan') }}" class="block text-white hover:text-yellow-300 text-change">Yayasan</a>
 
         <!-- Unit Pendidikan -->
-        <div x-data="{ open: false }" class="text-white">
-            <button @click="open = !open" class="w-full text-left text-white hover:text-yellow-300">
+        <div x-data="{ open: false }" class="text-white text-change">
+            <button @click="open = !open" class="w-full text-left text-white text-change hover:text-yellow-300">
                 Unit Pendidikan
             </button>
 
@@ -82,25 +86,30 @@
                 @foreach ($units as $index => $unit)
                     <div x-data="{ subOpen: false }" class="space-y-1">
                         <button @click="subOpen = !subOpen"
-                            class="w-full text-left text-white hover:text-yellow-300 flex justify-between items-center">
+                            class="w-full text-left text-white text-change hover:text-yellow-300 flex justify-between items-center">
                             {{ $unit->nama }}
-                            @if ($unit->navbars->count())
-                                <svg :class="{ 'rotate-90': subOpen }" class="w-4 h-4 transform transition-transform"
-                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M9 5l7 7-7 7" />
-                                </svg>
-                            @endif
+                            <svg :class="{ 'rotate-90': subOpen }" class="w-4 h-4 transform transition-transform"
+                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 5l7 7-7 7" />
+                            </svg>
                         </button>
-                        @if ($unit->navbars->count())
-                            <div x-show="subOpen" x-cloak class="pl-4 space-y-1">
-                                @foreach ($unit->navbars as $nav)
-                                    <a href="{{ url('artikel/' . $nav->cta_link) }}" class="block text-white hover:text-yellow-300">
-                                        {{ strtoupper($nav->cta_text) }}
-                                    </a>
-                                @endforeach
-                            </div>
-                        @endif
+
+                        <div x-show="subOpen" x-cloak class="pl-4 space-y-1">
+                            <!-- Tentang Option (Default) -->
+                            <a href="{{ route('unit.tentang', $unit->slug) }}"
+                                class="block text-white text-change hover:text-yellow-300 border-b border-gray-400 pb-1">
+                                TENTANG
+                            </a>
+
+                            <!-- Custom Navbar Options -->
+                            @foreach ($unit->navbars as $nav)
+                                <a href="{{ url('artikel/' . $nav->cta_link) }}"
+                                    class="block text-white text-change hover:text-yellow-300">
+                                    {{ strtoupper($nav->cta_text) }}
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
                 @endforeach
             </div>
@@ -145,4 +154,3 @@
         }
     </style>
 @endif
-
