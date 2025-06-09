@@ -10,7 +10,6 @@
 <section style="padding: 150px 20px 100px; background: linear-gradient(135deg, rgba(238, 255, 1, 0.208), rgba(247, 255, 4, 0.515)), url({{ asset('storage/' . $unit->image) }}) center/cover no-repeat; color: white; text-align: center;">
     <div class="max-w-4xl mx-auto">
         <h1 class="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">{{ $unit->nama }}</h1>
-        <p class="text-xl md:text-2xl opacity-90 font-light">Sekolah menengah pertama unggulan dengan berbagai prestasi akademik dan non-akademik</p>
     </div>
 </section>
 

@@ -89,7 +89,9 @@ class ArtikelResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('thumbnail'),
+                ImageColumn::make('thumbnail')
+                    ->label('Thumbnail')
+                    ->size(50),
                 TextColumn::make('judul')
                     ->label('Judul Artikel')
                     ->searchable()

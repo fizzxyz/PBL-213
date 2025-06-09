@@ -15,14 +15,6 @@
             <!-- Floating Circle - Hidden on mobile -->
             <div class="absolute -top-8 -right-8 w-48 h-48 bg-white bg-opacity-20 rounded-full floating-circle hidden lg:block"></div>
 
-            <!-- Logo -->
-            <div class="flex items-center mb-4 sm:mb-6 text-lg sm:text-xl font-bold relative z-10">
-                <div class="bg-white bg-opacity-20 p-2 rounded-lg mr-3">
-                    <img src="{{ asset('storage/' . $yayasan->logo) }}" alt="Logo" class="h-8 w-8 sm:h-10 sm:w-10 rounded-full">
-                </div>
-                <span class="truncate">{{ $yayasan->name }}</span>
-            </div>
-
             <!-- Welcome Text -->
             <div class="relative z-10">
                 <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 drop-shadow-lg">Salam!</h1>

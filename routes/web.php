@@ -53,7 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:admin|super_admin'])->group(function () {
-    Route::post('/home-content/update', [HomeController::class, 'updateContent'])
+    Route::post('/home-content/update', [HomeController::class, 'update'])
         ->name('home-content.update');
     Route::post('/yayasan/update-content', [HomeController::class, 'updateYayasan'])->name('yayasan.update.content');
 });

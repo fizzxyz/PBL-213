@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\HomeContent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login');
+        $homeContent = HomeContent::where('id', 1)->first();
+        return view('auth.login', compact('homeContent'));
     }
 
     /**
@@ -31,8 +33,8 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
 
         // Redirect berdasarkan role
-        if ($user->hasRole('admin')) {
-            return redirect()->intended('/admin'); // Route Filament admin
+        if ($user->hasRole(['admin', 'super_admin'])) {
+            session(['show_role_modal' => true]);
         } elseif ($user->hasRole('calonSiswa')) {
             return redirect()->intended('/penerimaan');
         } elseif ($user->hasRole('pengunjung')) {
