@@ -20,6 +20,8 @@ class UnitSeeder extends Seeder
                 'about' => 'Sekolah menengah pertama unggulan dengan berbagai prestasi akademik dan non-akademik.',
                 'slug' => 'smkit-dbs-01',
                 'logo' => 'smkit-dbs-01-logo.png',
+                'visi' => 'Mencetak generasi yang berprestasi dan berakhlak mulia.',
+                'misi' => 'Menyediakan pendidikan berkualitas, mengembangkan potensi siswa, dan membentuk karakter yang baik.',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
