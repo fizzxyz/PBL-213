@@ -19,6 +19,7 @@ class UnitSeeder extends Seeder
                 'alamat' => 'Jl. Pendidikan No. 123',
                 'about' => 'Sekolah menengah pertama unggulan dengan berbagai prestasi akademik dan non-akademik.',
                 'slug' => 'smkit-dbs-01',
+                'logo' => 'smkit-dbs-01-logo.png',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
